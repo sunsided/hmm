@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace NER.HMM
+namespace widemeadows.machinelearning.HMM
 {
     /// <summary>
     /// Class StateObservationExtensions.

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using JetBrains.Annotations;
 
-namespace NER.HMM
+namespace widemeadows.machinelearning.HMM
 {
     /// <summary>
     /// Class NamedState. This class cannot be inherited.

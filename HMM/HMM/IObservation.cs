@@ -1,4 +1,4 @@
-﻿namespace NER.HMM
+﻿namespace widemeadows.machinelearning.HMM
 {
     /// <summary>
     /// Interface IObservation

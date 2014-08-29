@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
-using NER.HMM;
+using widemeadows.machinelearning.HMM;
 
-namespace NER
+namespace widemeadows.machinelearning
 {
     class Program
     {

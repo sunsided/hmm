@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace NER.HMM
+namespace widemeadows.machinelearning.HMM
 {
     internal class IndexedStateMatrixBase
     {
