@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using JetBrains.Annotations;
 
 namespace NER.HMM
@@ -26,6 +27,16 @@ namespace NER.HMM
         {
             _entries.Add(entry);
             return entry;
+        }
+
+        /// <summary>
+        /// Ases the read only.
+        /// </summary>
+        /// <returns>ReadOnlyCollection&lt;T&gt;.</returns>
+        [NotNull]
+        public ReadOnlyCollection<T> AsReadOnly()
+        {
+            return _entries.AsReadOnly();
         }
 
         /// <summary>

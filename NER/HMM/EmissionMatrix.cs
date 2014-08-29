@@ -70,9 +70,26 @@ namespace NER.HMM
         }
 
         /// <summary>
+        /// Gets the 
+        /// <see cref="System.Double" /> probability of emitting the state.
+        /// <para>
+        /// This function is an alias for <see cref="GetEmission(LabeledObservation)" />.
+        /// </para>
+        /// </summary>
+        /// <param name="pair">The pair.</param>
+        /// <returns>System.Double.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">currentState;The current state's index is out of range</exception>
+        /// <seealso cref="GetEmission(LabeledObservation)" />
+        [Pure]
+        public double Generate(LabeledObservation pair)
+        {
+            return GetEmission(pair);
+        }
+
+        /// <summary>
         /// Gets the <see cref="System.Double" /> probability of emitting the state.
         /// <para>
-        /// This function is an alias for <see cref="GetEmission"/>.
+        /// This function is an alias for <see cref="GetEmission(IState, IObservation)"/>.
         /// </para>
         /// </summary>
         /// <param name="state">The state.</param>
@@ -81,7 +98,7 @@ namespace NER.HMM
         /// <exception cref="System.ArgumentOutOfRangeException">
         /// currentState;The current state's index is out of range
         /// </exception>
-        /// <seealso cref="GetEmission"/>
+        /// <seealso cref="GetEmission(IState, IObservation)"/>
         [Pure]
         public double Generate([NotNull] IState state, [NotNull] IObservation observation)
         {

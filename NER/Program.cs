@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using NER.HMM;
 
 namespace NER
@@ -47,7 +49,7 @@ namespace NER
                 emissions.SetEmission(noun, problem, 0.3);
                 emissions.SetEmission(noun, crazy, 0);
 
-                var hmm = new HiddenMarkovModel(initial, transitions, emissions);
+                var hmm = new HiddenMarkovModel(states.AsReadOnly(), initial, transitions, emissions);
 
                 // P(AA | killer clown)
                 var paa = hmm.GetProbability(killer.As(adjective), clown.As(adjective));
@@ -90,7 +92,7 @@ namespace NER
                 var emissions = new EmissionMatrix(states, observations);
                 emissions.Learn(trainingSet);
 
-                var hmm = new HiddenMarkovModel(initial, transitions, emissions);
+                var hmm = new HiddenMarkovModel(states.AsReadOnly(), initial, transitions, emissions);
 
                 // P(AA | killer clown)
                 var paa = hmm.GetProbability(killer.As(adjective), clown.As(adjective));
@@ -107,7 +109,39 @@ namespace NER
                 // P(NA | killer clown)
                 var pna = hmm.GetProbability(killer.As(noun), clown.As(adjective));
                 Debug.Assert(Math.Abs(pna) < compareEpsilon);
+
+                // apply the viterbi algorithm to find the most likely sequence
+                ApplyViterbiAndPrint(hmm, new[] { killer, crazy, clown, problem });
+                ApplyViterbiAndPrint(hmm, new[] { crazy, killer, clown, problem });
+                ApplyViterbiAndPrint(hmm, new[] { crazy, clown, killer, crazy, problem });
+
+                Console.WriteLine("Press any key to exit.");
+                Console.ReadKey(true);
             }
+        }
+
+        /// <summary>
+        /// Applies the Viterbi algorithm and prints the most likely state sequence;
+        /// </summary>
+        /// <param name="hmm">The HMM.</param>
+        /// <param name="observationSequence">The observation sequence.</param>
+        private static void ApplyViterbiAndPrint([NotNull] HiddenMarkovModel hmm, [NotNull] IList<IObservation> observationSequence)
+        {
+            var stateSequence = hmm.Viterbi(observationSequence);
+
+            // zip for output
+            var taggedSequence = observationSequence.Zip(stateSequence, (o, s) => String.Format("{0}/{1}", o, s));
+
+            // merge zipped sequence to string
+            var sb = new StringBuilder();
+            foreach (var s in taggedSequence)
+            {
+                sb.Append(s);
+                sb.Append(" ");
+            }
+            
+            // printify
+            Console.WriteLine(sb.ToString().TrimEnd());
         }
     }
 }
