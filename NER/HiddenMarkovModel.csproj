@@ -8,8 +8,8 @@
     <ProjectGuid>{D61C4DBF-92A4-45A5-BEB8-D9CD41E14EBC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NER</RootNamespace>
-    <AssemblyName>NER</AssemblyName>
+    <RootNamespace>widemeadows.machinelearning.hmm</RootNamespace>
+    <AssemblyName>HiddenMarkovModel</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
