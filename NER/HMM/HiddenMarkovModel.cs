@@ -45,8 +45,8 @@ namespace NER.HMM
         /// <param name="right">The right state as seen with the observation.</param>
         /// <returns>System.Double.</returns>
         public double GetProbability(
-            StateObservationPair left,
-            StateObservationPair right)
+            LabeledObservation left,
+            LabeledObservation right)
         {
             var p = _inital.GetProbability(left.State)*
                     _emission.GetEmission(left)*

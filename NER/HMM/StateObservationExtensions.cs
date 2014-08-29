@@ -8,25 +8,25 @@ namespace NER.HMM
     static class StateObservationExtensions
     {
         /// <summary>
-        /// Gets a <see cref="StateObservationPair"/> containing the <paramref name="state"/> seen as the given <seealso cref="observation"/>.
+        /// Gets a <see cref="LabeledObservation"/> containing the <paramref name="state"/> seen as the given <seealso cref="observation"/>.
         /// </summary>
         /// <param name="state">The state.</param>
         /// <param name="observation">The observation.</param>
         /// <returns>StateObservationPair.</returns>
-        public static StateObservationPair From([NotNull] this IState state, [NotNull] IObservation observation)
+        public static LabeledObservation From([NotNull] this IState state, [NotNull] IObservation observation)
         {
-            return new StateObservationPair(state, observation);
+            return new LabeledObservation(state, observation);
         }
 
         /// <summary>
-        /// Gets a <see cref="StateObservationPair"/> containing the <paramref name="state"/> seen as the given <seealso cref="observation"/>.
+        /// Gets a <see cref="LabeledObservation"/> containing the <paramref name="state"/> seen as the given <seealso cref="observation"/>.
         /// </summary>
         /// <param name="state">The state.</param>
         /// <param name="observation">The observation.</param>
         /// <returns>StateObservationPair.</returns>
-        public static StateObservationPair As([NotNull] this IObservation observation, [NotNull] IState state)
+        public static LabeledObservation As([NotNull] this IObservation observation, [NotNull] IState state)
         {
-            return new StateObservationPair(state, observation);
+            return new LabeledObservation(state, observation);
         }
     }
 }

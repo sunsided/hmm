@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace NER.HMM
@@ -95,7 +96,7 @@ namespace NER.HMM
         /// <exception cref="System.ArgumentException">The given state was not previously registered;state</exception>
         /// <exception cref="System.ArgumentException">The given observation was not previously registered;observation</exception>
         [Pure, DebuggerStepThrough]
-        public double GetEmission(StateObservationPair pair)
+        public double GetEmission(LabeledObservation pair)
         {
             return GetEmission(pair.State, pair.Observation);
         }
@@ -175,6 +176,33 @@ namespace NER.HMM
             int index;
             if (_observations.TryGetValue(observation, out index)) return index;
             throw new ArgumentException("The given observation was not previously registered", "observation");
+        }
+
+        /// <summary>
+        /// Learns the emission probabilities from the specified training set.
+        /// </summary>
+        /// <param name="trainingSet">The training set.</param>
+        public void Learn([NotNull] IList<IList<LabeledObservation>> trainingSet)
+        {
+            var observationsGroupedByState = trainingSet
+                .SelectMany(set => set)
+                .GroupBy(set => set.State);
+
+            foreach (var example in observationsGroupedByState)
+            {
+                var state = example.Key;
+                var examples = example.GroupBy(e => e.Observation).ToList();
+                var totalCount = examples.Sum(e => e.Count());
+
+                foreach (var group in examples)
+                {
+                    var observation = group.Key;
+                    var count = group.Count();
+                    var probability = (double) count/totalCount;
+
+                    SetEmission(state, observation, probability);
+                }
+            }
         }
     }
 }

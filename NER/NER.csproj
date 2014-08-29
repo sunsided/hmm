@@ -56,8 +56,9 @@
     <Compile Include="HMM\IState.cs" />
     <Compile Include="HMM\NamedState.cs" />
     <Compile Include="HMM\Registry.cs" />
-    <Compile Include="HMM\StateObservationPair.cs" />
+    <Compile Include="HMM\LabeledObservation.cs" />
     <Compile Include="HMM\TransitionMatrix.cs" />
+    <Compile Include="LinqExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

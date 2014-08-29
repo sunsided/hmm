@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Diagnostics;
 using JetBrains.Annotations;
 
 namespace NER.HMM
 {
     /// <summary>
-    /// Struct StateObservationPair
+    /// Struct LabeledObservation
     /// </summary>
-    struct StateObservationPair
+    [DebuggerDisplay("{Observation}/{State}")]
+    struct LabeledObservation
     {
         /// <summary>
         /// The state
@@ -21,7 +23,7 @@ namespace NER.HMM
         public readonly IObservation Observation;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StateObservationPair"/> struct.
+        /// Initializes a new instance of the <see cref="LabeledObservation"/> struct.
         /// </summary>
         /// <param name="state">The state.</param>
         /// <param name="observation">The observation.</param>
@@ -30,7 +32,7 @@ namespace NER.HMM
         /// or
         /// observation
         /// </exception>
-        public StateObservationPair([NotNull] IState state, [NotNull] IObservation observation)
+        public LabeledObservation([NotNull] IState state, [NotNull] IObservation observation)
         {
             if (state == null) throw new ArgumentNullException("state");
             if (observation == null) throw new ArgumentNullException("observation");
@@ -39,11 +41,11 @@ namespace NER.HMM
         }
         
         /// <summary>
-        /// Determines whether the specified <see cref="StateObservationPair" /> is equal to this instance.
+        /// Determines whether the specified <see cref="LabeledObservation" /> is equal to this instance.
         /// </summary>
         /// <param name="other">Another object to compare to.</param>
-        /// <returns><see langword="true" /> if the specified <see cref="StateObservationPair" /> is equal to this instance; otherwise, <see langword="false" />.</returns>
-        public bool Equals(StateObservationPair other)
+        /// <returns><see langword="true" /> if the specified <see cref="LabeledObservation" /> is equal to this instance; otherwise, <see langword="false" />.</returns>
+        public bool Equals(LabeledObservation other)
         {
             return State.Equals(other.State) && Observation.Equals(other.Observation);
         }
@@ -56,7 +58,7 @@ namespace NER.HMM
         public override bool Equals([CanBeNull] object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is StateObservationPair && Equals((StateObservationPair) obj);
+            return obj is LabeledObservation && Equals((LabeledObservation) obj);
         }
 
         /// <summary>
@@ -69,6 +71,15 @@ namespace NER.HMM
             {
                 return (State.GetHashCode()*397) ^ Observation.GetHashCode();
             }
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        public override string ToString()
+        {
+            return String.Format("{0}/{1}", Observation, State);
         }
     }
 }
