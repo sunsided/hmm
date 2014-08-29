@@ -112,17 +112,34 @@ namespace NER.HMM
                     from currentState in _states
                     let s = currentState
                     let o = observation
-                    let probability = (
+                    let bestMatch = (
                         from previousState in previousRound
-                        select previousState.Probability*_transition.GetTransition(previousState.State, s)*_emission.Generate(s, o)
-                        ).Max()
-                    select new StateProbability(currentState, probability)
+                        let probability =
+                            previousState.Probability*_transition.GetTransition(previousState.State, s)*
+                            _emission.Generate(s, o)
+                        select new StateProbability(currentState, probability, previousState)
+                        ).OrderByDescending(p => p.Probability)
+                        .First()
+                    select bestMatch
                     );
             }
 
-            // "backtrack" by selecting the most probable
-            // state of each step
-            return viterbiTable.Select(entry => entry.OrderByDescending(e => e.Probability).First().State);
+            Debug.Assert(currentRound != null, "currentRound != null");
+
+            // backtrack by selecting the originator of the most probable result
+            var stack = new Stack<StateProbability>();
+            var token = currentRound.OrderByDescending(r => r.Probability).First();
+            while (token != null)
+            {
+                stack.Push(token);
+                token = token.Previous;
+            }
+
+            // emit backtracked path
+            while (stack.Count > 0)
+            {
+                yield return stack.Pop().State;
+            }
         }
     }
 }
