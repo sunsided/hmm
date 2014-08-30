@@ -44,6 +44,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HMM\ClassicalBaumWelchLearning.cs" />
     <Compile Include="HMM\StateObservationExtensions.cs" />
     <Compile Include="HMM\HiddenMarkovModel.cs" />
     <Compile Include="HMM\NamedObservation.cs" />

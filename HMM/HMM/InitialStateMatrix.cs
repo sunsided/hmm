@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using JetBrains.Annotations;
 
 namespace widemeadows.machinelearning.HMM
@@ -117,28 +116,6 @@ namespace widemeadows.machinelearning.HMM
             if (probability < 0 || probability > 1) throw new ArgumentOutOfRangeException("probability", probability, "The probability value must be in range 0..1");
             if (Double.IsNaN(probability) || Double.IsInfinity(probability)) throw new NotFiniteNumberException("The value must be a finite number.", probability);
             _probabilities[state] = probability;
-        }
-
-        /// <summary>
-        /// Learns the initial probabilities from the specified training set.
-        /// </summary>
-        /// <param name="trainingSet">The training set.</param>
-        public void Learn([NotNull] IList<IList<LabeledObservation>> trainingSet)
-        {
-            // group all traning sentences beginning with the same state
-            var groups = trainingSet.GroupBy(set => set.First().State).ToList();
-            var totalCount = trainingSet.Count;
-
-            // get the probability by dividing the count of each state's occurrence
-            // by the total number of training sets
-            foreach (var group in groups)
-            {
-                var state = group.Key;
-                var occurrences = group.Count();
-                var probability = (double) occurrences/totalCount;
-
-                SetProbability(state, probability);
-            }
         }
     }
 }

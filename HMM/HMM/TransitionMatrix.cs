@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using JetBrains.Annotations;
 
 namespace widemeadows.machinelearning.HMM
@@ -114,40 +113,6 @@ namespace widemeadows.machinelearning.HMM
             if (probability < 0 || probability > 1) throw new ArgumentOutOfRangeException("probability", probability, "The probability value must be in range 0..1");
             if (Double.IsNaN(probability) || Double.IsInfinity(probability)) throw new NotFiniteNumberException("The value must be a finite number.", probability);
             _probabilities[currentState, nextState] = probability;
-        }
-
-        /// <summary>
-        /// Learns the transition probabilities from the specified training set.
-        /// </summary>
-        /// <param name="trainingSet">The training set.</param>
-        public void Learn([NotNull] IList<IList<LabeledObservation>> trainingSet)
-        {
-            // generate bigrams from each training sentence and
-            // group these pairs by the left item's state
-            var pairsGroupedByLeftState = trainingSet
-                .SelectMany(set => set.Pairwise())
-                .GroupBy(pair => pair.Left.State);
-
-            // for each left state, group the items by the right states
-            foreach (var pairsOfSameStartingClass in pairsGroupedByLeftState)
-            {
-                var leftState = pairsOfSameStartingClass.Key;
-                var pairsOfSameStartingStateGroupedByRightState =
-                    pairsOfSameStartingClass.GroupBy(pair => pair.Right.State);
-                var countOfSameStartingState = pairsOfSameStartingClass.Count();
-
-                // determine each probability P(left -> right) by dividing
-                // the occurrence count of each right state by the total number of all
-                // occurrences starting in the left state
-                foreach (var grouping in pairsOfSameStartingStateGroupedByRightState)
-                {
-                    var rightState = grouping.Key;
-                    var occurrences = grouping.Count();
-                    var percentage = (double) occurrences/countOfSameStartingState;
-
-                    SetTransition(leftState, rightState, percentage);
-                }
-            }
         }
     }
 }

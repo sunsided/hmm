@@ -79,17 +79,14 @@ namespace widemeadows.machinelearning
                     new[] {clown.As(noun), crazy.As(adjective), killer.As(noun)},
                 };
 
-                // learn the initial state probabilities
+                // prepare the matrices
                 var initial = new InitialStateMatrix(states);
-                initial.Learn(trainingSet);
-
-                // learn the transition probabilities
                 var transitions = new TransitionMatrix(states);
-                transitions.Learn(trainingSet);
-
-                // learn the emission probabilities
                 var emissions = new EmissionMatrix(states, observations);
-                emissions.Learn(trainingSet);
+
+                // learn the probabilities
+                var learner = new ClassicalBaumWelchLearning();
+                learner.Learn(initial, transitions, emissions, trainingSet);
 
                 var hmm = new HiddenMarkovModel(states, initial, transitions, emissions);
 
