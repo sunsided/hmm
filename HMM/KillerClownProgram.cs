@@ -111,7 +111,7 @@ namespace widemeadows.machinelearning
                 hmm.ApplyViterbiAndPrint(new[] { crazy, killer, clown, problem });
                 hmm.ApplyViterbiAndPrint(new[] { crazy, clown, killer, crazy, problem });
 
-                var p = hmm.Evaluate(new[] {crazy, killer, crazy, killer});
+                var p = hmm.Evaluate(new[] { killer, crazy, clown, problem });
             }
         }
     }
