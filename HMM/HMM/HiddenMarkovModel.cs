@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -62,10 +63,19 @@ namespace widemeadows.machinelearning.HMM
             LabeledObservation left,
             LabeledObservation right)
         {
+#if true
             var p = _inital.GetProbability(left.State)*
                     _emission.GetEmission(left)*
                     _transition.GetTransition(left.State, right.State)*
                     _emission.GetEmission(right);
+#else
+            // using Log-Likelihoods
+            var p = Math.Exp(Math.Log(_inital.GetProbability(left.State)) +
+                             Math.Log(_emission.GetEmission(left)) +
+                             Math.Log(_transition.GetTransition(left.State, right.State)) +
+                             Math.Log(_emission.GetEmission(right)));
+            if (Double.IsInfinity(p)) return 0;
+#endif
             return p;
         }
 
