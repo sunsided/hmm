@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using JetBrains.Annotations;
@@ -18,6 +19,19 @@ namespace widemeadows.machinelearning.HMM
         private readonly List<T> _entries = new List<T>();
 
         /// <summary>
+        /// The read only collection
+        /// </summary>
+        private readonly Lazy<ReadOnlyCollection<T>> _readOnlyCollection;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Registry{T}"/> class.
+        /// </summary>
+        public Registry()
+        {
+            _readOnlyCollection = new Lazy<ReadOnlyCollection<T>>(() => _entries.AsReadOnly());
+        }
+
+            /// <summary>
         /// Adds the specified entry.
         /// </summary>
         /// <param name="entry">The entry.</param>
@@ -36,7 +50,18 @@ namespace widemeadows.machinelearning.HMM
         [NotNull]
         public ReadOnlyCollection<T> AsReadOnly()
         {
-            return _entries.AsReadOnly();
+            return _readOnlyCollection.Value;
+        }
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="Registry{"/> to <see cref="ReadOnlyCollection{`0}"/>.
+        /// </summary>
+        /// <param name="registry">The registry.</param>
+        /// <returns>The result of the conversion.</returns>
+        [NotNull]
+        public static implicit operator ReadOnlyCollection<T>(Registry<T> registry)
+        {
+            return registry.AsReadOnly();
         }
 
         /// <summary>

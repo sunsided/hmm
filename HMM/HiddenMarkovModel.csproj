@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>widemeadows.machinelearning.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Contract.Annotations">
       <HintPath>..\packages\Contract.Annotations.8.2.1.0\lib\net40\Contract.Annotations.dll</HintPath>
@@ -50,12 +53,14 @@
     <Compile Include="HMM\IObservation.cs" />
     <Compile Include="HMM\IState.cs" />
     <Compile Include="HMM\NamedState.cs" />
-    <Compile Include="HMM\Registry.cs" />
+    <Compile Include="ArbitraryValueProgram.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Registry.cs" />
     <Compile Include="HMM\LabeledObservation.cs" />
     <Compile Include="HMM\StateProbability.cs" />
     <Compile Include="HMM\TransitionMatrix.cs" />
     <Compile Include="LinqExtensions.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="KillerClownProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
