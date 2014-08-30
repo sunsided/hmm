@@ -46,7 +46,7 @@ namespace widemeadows.machinelearning.HMM
         /// <returns>System.Int32.</returns>
         /// <exception cref="System.ArgumentException">The given state was not previously registered;state</exception>
         [Pure]
-        protected int GetStateIndex([NotNull] IState state)
+        public int GetStateIndex([NotNull] IState state)
         {
             int index;
             if (_states.TryGetValue(state, out index)) return index;

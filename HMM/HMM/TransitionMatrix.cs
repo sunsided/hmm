@@ -92,7 +92,7 @@ namespace widemeadows.machinelearning.HMM
         /// nextState;The next state's index is out of range
         /// </exception>
         [Pure]
-        private double GetTransition(int currentState, int nextState)
+        public double GetTransition(int currentState, int nextState)
         {
             if (currentState < 0 || currentState >= States) throw new ArgumentOutOfRangeException("currentState", currentState, "The current state's index is out of range");
             if (nextState < 0 || nextState >= States) throw new ArgumentOutOfRangeException("nextState", nextState, "The next state's index is out of range");
@@ -108,7 +108,7 @@ namespace widemeadows.machinelearning.HMM
         /// <param name="probability">The transition probability.</param>
         /// <exception cref="System.ArgumentOutOfRangeException">probability;The probability value must be in range 0..1</exception>
         /// <exception cref="System.NotFiniteNumberException">The value must be a finite number.</exception>
-        private void SetTransition(int currentState, int nextState, double probability)
+        public void SetTransition(int currentState, int nextState, double probability)
         {
             if (probability < 0 || probability > 1) throw new ArgumentOutOfRangeException("probability", probability, "The probability value must be in range 0..1");
             if (Double.IsNaN(probability) || Double.IsInfinity(probability)) throw new NotFiniteNumberException("The value must be a finite number.", probability);

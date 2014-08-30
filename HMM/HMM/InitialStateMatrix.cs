@@ -98,7 +98,7 @@ namespace widemeadows.machinelearning.HMM
         /// currentState;The state's index is out of range
         /// </exception>
         [Pure]
-        private double GetProbability(int state)
+        public double GetProbability(int state)
         {
             if (state < 0 || state >= States) throw new ArgumentOutOfRangeException("state", state, "The state's index is out of range");
             return _probabilities[state];
@@ -111,7 +111,7 @@ namespace widemeadows.machinelearning.HMM
         /// <param name="probability">The transition probability.</param>
         /// <exception cref="System.ArgumentOutOfRangeException">probability;The probability value must be in range 0..1</exception>
         /// <exception cref="System.NotFiniteNumberException">The value must be a finite number.</exception>
-        private void SetProbability(int state, double probability)
+        public void SetProbability(int state, double probability)
         {
             if (probability < 0 || probability > 1) throw new ArgumentOutOfRangeException("probability", probability, "The probability value must be in range 0..1");
             if (Double.IsNaN(probability) || Double.IsInfinity(probability)) throw new NotFiniteNumberException("The value must be a finite number.", probability);

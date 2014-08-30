@@ -159,7 +159,7 @@ namespace widemeadows.machinelearning.HMM
         /// <returns>System.Double.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">currentState;The state's index is out of range</exception>
         [Pure]
-        private double GetEmission(int state, int observation)
+        public double GetEmission(int state, int observation)
         {
             if (state < 0 || state >= States) throw new ArgumentOutOfRangeException("state", state, "The state's index is out of range");
             return _probabilities[state, observation];
@@ -173,7 +173,7 @@ namespace widemeadows.machinelearning.HMM
         /// <param name="probability">The transition probability.</param>
         /// <exception cref="System.ArgumentOutOfRangeException">probability;The probability value must be in range 0..1</exception>
         /// <exception cref="System.NotFiniteNumberException">The value must be a finite number.</exception>
-        private void SetEmission(int state, int observation, double probability)
+        public void SetEmission(int state, int observation, double probability)
         {
             if (probability < 0 || probability > 1) throw new ArgumentOutOfRangeException("probability", probability, "The probability value must be in range 0..1");
             if (Double.IsNaN(probability) || Double.IsInfinity(probability)) throw new NotFiniteNumberException("The value must be a finite number.", probability);
@@ -187,7 +187,7 @@ namespace widemeadows.machinelearning.HMM
         /// <returns>System.Int32.</returns>
         /// <exception cref="System.ArgumentException">The given observation was not previously registered;observation</exception>
         [Pure]
-        private int GetObservationIndex([NotNull] IObservation observation)
+        public int GetObservationIndex([NotNull] IObservation observation)
         {
             int index;
             if (_observations.TryGetValue(observation, out index)) return index;
