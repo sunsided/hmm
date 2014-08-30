@@ -19,7 +19,7 @@ namespace widemeadows.machinelearning.HMM
         /// <summary>
         /// The probability
         /// </summary>
-        public double Probability { get; private set; }
+        public double Probability { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StateProbability" /> struct.

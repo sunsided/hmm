@@ -180,8 +180,9 @@ namespace widemeadows.machinelearning.HMM
         /// </summary>
         /// <param name="observations">The observations.</param>
         /// <param name="coefficients">The coefficients.</param>
-        /// <returns>System.Double.</returns>
-        private void ForwardProbability([NotNull] IList<IObservation> observations, out IList<double> coefficients)
+        /// <returns>The state probabilities given the observation.</returns>
+        [NotNull]
+        private ObservedStateProbability[,] ForwardProbability([NotNull] IList<IObservation> observations, out IList<double> coefficients)
         {
             var states = _states;
             var emission = _emission;
@@ -191,7 +192,7 @@ namespace widemeadows.machinelearning.HMM
             var stateCount = states.Count;
 
             // the array of forward probabilities
-            var fwd = new double[observationCount, stateCount];
+            var fwd = new ObservedStateProbability[observationCount, stateCount];
 
             // the array of summed probabilities per observation
             coefficients = new double[observationCount];
@@ -204,7 +205,7 @@ namespace widemeadows.machinelearning.HMM
 
                 // calculate the probability of starting in that state given the first observation
                 var probability = _inital.GetProbability(state) * emission.GetEmission(state, firstObservation);
-                fwd[0, i] = probability;
+                fwd[0, i] = new ObservedStateProbability(firstObservation, state, probability);
 
                 // sum probabilities in order to normalize them later
                 coefficients[0] += probability;
@@ -216,7 +217,7 @@ namespace widemeadows.machinelearning.HMM
                 var normalizationFactor = 1.0D/coefficients[0];
                 for (int i = 0; i < stateCount; ++i)
                 {
-                    fwd[0, i] = fwd[0, i] * normalizationFactor;
+                    fwd[0, i].Probability *= normalizationFactor;
                 }
             }
 
@@ -244,12 +245,12 @@ namespace widemeadows.machinelearning.HMM
                         var previousState = states[j];
                         var previousProbability = fwd[t - 1, j];
                         var transitionProbability = transition.GetTransition(previousState, state);
-                        summedProbabilities += previousProbability * transitionProbability;
+                        summedProbabilities += previousProbability.Probability * transitionProbability;
                     }
 
                     // calculate the forward probability for this time step
                     var probability = emissionProbability*summedProbabilities;
-                    fwd[t, i] = probability;
+                    fwd[t, i] = new ObservedStateProbability(observation, state, probability);
 
                     // sum probabilities in order to normalize them later
                     coefficients[t] += probability;
@@ -261,13 +262,13 @@ namespace widemeadows.machinelearning.HMM
                     var normalizationFactor = 1.0D / coefficients[t];
                     for (int i = 0; i < stateCount; ++i)
                     {
-                        fwd[t, i] = fwd[t, i] * normalizationFactor;
+                        fwd[t, i].Probability *= normalizationFactor;
                     }
                 }
             }
 
             // return the scaled forward probabilities
-            // return fwd;
+            return fwd;
         }
     }
 }
