@@ -54,6 +54,7 @@
     <Compile Include="HMM\IState.cs" />
     <Compile Include="HMM\NamedState.cs" />
     <Compile Include="ArbitraryValueProgram.cs" />
+    <Compile Include="HMM\ChainedStateProbability.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Registry.cs" />
     <Compile Include="HMM\LabeledObservation.cs" />

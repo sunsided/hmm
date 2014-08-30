@@ -76,19 +76,18 @@ namespace widemeadows.machinelearning.HMM
         /// <param name="observations">The observations.</param>
         /// <returns>IEnumerable&lt;IState&gt;.</returns>
         [NotNull]
-        public IEnumerable<IState> Viterbi([NotNull] IEnumerable<IObservation> observations)
+        public IEnumerable<StateProbability> Viterbi([NotNull] IEnumerable<IObservation> observations)
         {
             var stateCount = _states.Count;
-            var viterbiTable = new List<List<StateProbability>>();
+            var viterbiTable = new List<List<ChainedStateProbability>>();
             bool isFirst = true;
 
-            List<StateProbability> previousRound = null;
-            List<StateProbability> currentRound = null;
+            List<ChainedStateProbability> currentRound = null;
 
             foreach (var observation in observations)
             {
-                previousRound = currentRound;
-                currentRound = new List<StateProbability>(stateCount);
+                var previousRound = currentRound;
+                currentRound = new List<ChainedStateProbability>(stateCount);
                 viterbiTable.Add(currentRound);
 
                 // initialize the first round
@@ -98,7 +97,7 @@ namespace widemeadows.machinelearning.HMM
                     // initial probability given the observation.
                     currentRound.AddRange(from state in _states
                         let p = _inital.GetProbability(state)*_emission.GetEmission(state, observation)
-                        select new StateProbability(state, p)
+                        select new ChainedStateProbability(state, p)
                         );
 
                     isFirst = false;
@@ -113,10 +112,8 @@ namespace widemeadows.machinelearning.HMM
                     let o = observation
                     let bestMatch = (
                         from previousState in previousRound
-                        let probability =
-                            previousState.Probability*_transition.GetTransition(previousState.State, s)*
-                            _emission.Generate(s, o)
-                        select new StateProbability(currentState, probability, previousState)
+                        let probability = previousState.Probability * _transition.GetTransition(previousState.State, s) * _emission.Generate(s, o)
+                        select new ChainedStateProbability(currentState, probability, previousState)
                         ).OrderByDescending(p => p.Probability)
                         .First()
                     select bestMatch
@@ -137,7 +134,7 @@ namespace widemeadows.machinelearning.HMM
             // emit backtracked path
             while (stack.Count > 0)
             {
-                yield return stack.Pop().State;
+                yield return stack.Pop();
             }
         }
     }

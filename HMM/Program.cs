@@ -28,18 +28,20 @@ namespace widemeadows.machinelearning
             var stateSequence = hmm.Viterbi(observationSequence);
 
             // zip for output
-            var taggedSequence = observationSequence.Zip(stateSequence, (o, s) => String.Format("{0}/{1}", o, s));
+            var taggedSequence = observationSequence.Zip(stateSequence, (o, s) => String.Format("{0}/{1} ({2:P})", o, s.State, s.Probability));
 
             // merge zipped sequence to string
             var sb = new StringBuilder();
+            sb.AppendLine("Results:");
             foreach (var s in taggedSequence)
             {
-                sb.Append(s);
-                sb.Append(" ");
+                sb.Append("  ");
+                sb.AppendLine(s);
             }
             
             // printify
-            Console.WriteLine(sb.ToString().TrimEnd());
+            Console.WriteLine(sb.ToString());
+            Console.WriteLine();
         }
     }
 }
